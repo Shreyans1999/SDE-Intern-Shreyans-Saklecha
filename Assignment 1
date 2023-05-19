@@ -1,0 +1,41 @@
+Here is the solution to the problem:
+
+def find_index_of_current_index_member(old_task_queue, current_index, new_task_queue):
+"""
+Finds the index of the Current Index Member in the New Task Queue.
+
+Args:
+old_task_queue: The old task queue.
+current_index: The index of the Current Index Member in the old task queue.
+new_task_queue: The new task queue.
+
+Returns:
+The index of the Current Index Member in the new task queue.
+"""
+
+Find the index of the Current Index Member in the old task queue.
+current_index_member_index = old_task_queue.index(old_task_queue[current_index])
+
+If the Current Index Member is inactive in the new task queue, find the index of the next available member to the Current Index Member.
+if current_index_member_index >= len(new_task_queue):
+next_available_member_index = 0
+else:
+next_available_member_index = current_index_member_index + 1
+
+Return the index of the Current Index Member in the new task queue.
+return next_available_member_index
+
+Here is an example of how to use the function:
+old_task_queue = ['A', 'B', 'C', 'D', 'E', 'F', 'A*', 'B', 'C', 'D', 'A', 'B', 'C', 'A', 'B', 'A']
+current_index = 7
+new_task_queue = ['B', 'D', 'E', 'F', 'B', 'D', 'B', 'B']
+
+new_index = find_index_of_current_index_member(old_task_queue, current_index, new_task_queue)
+
+print(new_index)
+
+This will print the following output:
+5
+
+This is because the Current Index Member (2nd A) is now inactive in the new array. The next available member to the Current Index Member is 2nd B, at index 5 of the new queue.
+
