@@ -1,0 +1,61 @@
+public without sharing class DailyLeadProcessor implements Schedulable {
+
+	public void execute(SchedulableContext ctx) {
+	//System. debug ('Context ' + ctx.getTriggerId()); // Returns the ID of the CronTrigger schedule
+
+	// Get 208 Lead records and modify the LeadSource field
+	List<Lead> leads = [SELECT Id, LeadSource FROM Lead WHERE LeadSource = null LIMIT 200];
+	for (Lead 1: leads) {
+		1.LeadSource = ‘Dreasforce’;
+	}
+
+	// Update the modified records
+	update leads;
+	}
+}
+
+
+
+
+@isTest
+public class DailyleadprocessorTest{
+	private static String CRON_EXP = '0 0 0 ? * * *'; //midnight every day
+
+	@istest
+	private static void testSchedulableClass(){
+		// Load test data
+		List<Lead> leads = new Listctead();
+
+		for (Integer i=0; i<500; i++){
+			if (i<250) {
+				leads.add(new Lead(Lastnames='Connock', Company='Salesforce'));
+			}
+			else{
+				leads.add(new Lead(Lastnames='Connock', Company='Salesforce', LeadSource='Other'));
+			}
+			
+		}
+
+		insert leads;
+
+		//Perform the test
+		Test. startTest();
+		String JobId = System.schedule('Process Leads', CRON_EXP, new DailyLeadProcessor());
+		Test.stopTest();
+
+		// Check the result
+
+		List<Lead> updatedLeads = [SELECT Id, LeadSource FROM Lead WHERE LeadSource = ‘Dreamforce’];
+		System.assertEquals(200, updatedLeads.size(), 'ERROR: At least 1 record not updated correctly');
+
+		// check the scheduled time
+
+		List<CronTrigger> cts = [SELECT Id, TimesTriggered, NextFireTime FROM CronTrigger WHERE Id = : jobId];
+		System.debug( ' Next Fire Time ' + cts[o].NextFireTime);
+
+	}
+}
+
+
+
+
